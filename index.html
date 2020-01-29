@@ -126,7 +126,6 @@
 		}
 
 		// Listeners
-        /*
 		window.addEventListener('hashchange', () => {
 			const activeModalHash = localStorage.getItem("activeModal");
 			const activeModal = document.querySelector(`[data-modal="${activeModalHash}"]`);
@@ -149,7 +148,6 @@
                 // console.log('hashchange +' + activeModalHash);
 			}
 		});
-        */
 
         window.addEventListener('popstate', () => {
             const activeModalHash = localStorage.getItem("activeModal");
@@ -164,9 +162,12 @@
 		const modalOpens = document.querySelectorAll('.modal_open');
 
 		modalOpens.forEach(open => {
-			open.addEventListener('click', () => {
-				const { modalOpen } = open.dataset;
-				const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
+            const { modalOpen } = open.dataset;
+			const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
+			
+            open.addEventListener('click', () => {
+				// const { modalOpen } = open.dataset;
+				// const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
 
 				modal.setAttribute('data-state', 'active');
 
@@ -181,8 +182,9 @@
                 history.pushState(null, null, url);
 
 				const activeModal = document.querySelector('.modal[data-state="active"]');
+			});
 
-				modal.querySelector('.modal_inner_body').addEventListener('click', (e) => {
+            modal.querySelector('.modal_inner_body').addEventListener('click', (e) => {
 					e.stopPropagation();
 				});
 
@@ -196,17 +198,18 @@
                     // console.log('modal off click');
 				});
 
-				modal.querySelector('.modal_close').addEventListener('click', () => {
-					modal.setAttribute('data-state', 'disabled');
+            modal.querySelector('.modal_close').addEventListener('click', () => {
+                modal.setAttribute('data-state', 'disabled');
 
-					activateBodyOverflow();
-					
-                    historyBack();
+                activateBodyOverflow();
+                
+                historyBack();
 
-                    // console.log('modal off close');
-				});
-			});
+                // console.log('modal off close');
+            });
+
 		});
+
     </script>
 </body>
 </html>
