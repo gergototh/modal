@@ -1,0 +1,199 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Modal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            padding: 20px;
+            overflow-y: scroll;
+        }
+        body[data-overflow-y = hidden] {
+            overflow-y: hidden;
+        }
+        .modal {
+            pointer-events: none;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 100;
+            margin-right: 17px;
+            opacity: 0;
+            -webkit-transition: opacity 300ms ease-in;
+            -o-transition: opacity 300ms ease-in;
+            transition: opacity 300ms ease-in;
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translateZ(0) scale(1, 1);
+        }
+        .modal_inner {
+            padding: 80px 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transform: translateY(-103%);
+            -webkit-transition: all 300ms ease-in;
+            -o-transition: all 300ms ease-in;
+            transition: all 300ms ease-in;
+        }
+        .modal_inner_body {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -webkit-flex-direction: column;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            margin: 0 auto;
+            padding: 10px;
+            width: 100%;
+            max-width: 300px;
+            height: -webkit-max-content;
+            height: -moz-max-content;
+            height: max-content;
+            background-color: white;
+        }
+        .modal_inner_body h1 {
+            text-align: center;
+            margin: 0 0 20px 0;
+        }
+        .modal_inner_body button {
+            margin: 0 auto;
+        }
+        .modal[data-state = active] {
+            opacity: 1;
+            pointer-events: all;
+            overflow-y: scroll;
+            transition: all 300ms ease-out;
+        }
+        .modal[data-state = active] .modal_inner {
+            opacity: 1;
+            transform: none;
+            transition: all 300ms ease-out;
+        }
+    </style>
+</head>
+<body>
+    <button class="modal_open" data-modal-open="brendon">Megnyitás Brendon</button>
+    <button class="modal_open" data-modal-open="karcsika">Megnyitás Karcsika</button>
+
+    <div class="modal" data-modal="brendon">
+        <div class="modal_inner">
+            <div class="modal_inner_body">
+                <h1>Brendon</h1>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus necessitatibus vero a libero, itaque aliquid ipsum perferendis laboriosam fugit sed consequatur beatae molestias cumque! Atque officiis omnis harum unde perspiciatis!</p>
+                <button class="modal_close">Bezárás</button></div>
+        </div>
+    </div>
+
+    <div class="modal" data-modal="karcsika">
+        <div class="modal_inner">
+            <div class="modal_inner_body">
+                <h1>Karcsika</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque unde, earum eum voluptatum optio magni quae beatae qui ducimus. Expedita aut sint necessitatibus corrupti consequuntur maxime. Distinctio suscipit fuga nesciunt.</p>
+                <button class="modal_close">Bezárás</button></div>
+        </div>
+    </div>
+
+    <script>
+		// Functions
+		function historyBack() {
+            // window.history.back();
+            // console.log('history back');
+		}
+
+		function activateBodyOverflow() {
+			document.body.setAttribute('data-overflow-y', 'scroll');
+            // console.log('body overflow scroll');
+		}
+
+		function disableBodyOverflow() {
+			document.body.setAttribute('data-overflow-y', 'hidden');
+            // console.log('body overflow hidden');
+		}
+
+		// Listeners
+		window.addEventListener('hashchange', () => {
+			const activeModalHash = localStorage.getItem("activeModal");
+			const activeModal = document.querySelector(`[data-modal="${activeModalHash}"]`);
+
+            // console.log('hashchange');
+
+            /*
+			if (window.location.hash != '#' + activeModalHash) {
+				activeModal.setAttribute('data-state', 'disabled');
+
+				activateBodyOverflow();
+
+                // console.log('hashchange -' + activeModalHash);
+			} else {
+				activeModal.setAttribute('data-state', 'active');
+
+				disableBodyOverflow();
+
+                window.location.hash = activeModalHash;
+
+                // console.log('hashchange +' + activeModalHash);
+			}
+            */
+		});
+
+		// Modal system
+		const modalOpens = document.querySelectorAll('.modal_open');
+
+		modalOpens.forEach(open => {
+			open.addEventListener('click', () => {
+				const { modalOpen } = open.dataset;
+				const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
+
+				modal.setAttribute('data-state', 'active');
+
+				disableBodyOverflow();
+
+				// window.location.hash = modalOpen;
+
+				// localStorage.setItem("activeModal", modalOpen);
+
+				const activeModal = document.querySelector('.modal[data-state="active"]');
+
+				modal.querySelector('.modal_inner_body').addEventListener('click', (e) => {
+					e.stopPropagation();
+				});
+
+				modal.addEventListener('click', () => {
+					modal.setAttribute('data-state', 'disabled');
+
+					activateBodyOverflow();
+					
+                    // historyBack();
+
+                    // console.log('modal off click');
+				});
+
+				modal.querySelector('.modal_close').addEventListener('click', () => {
+					modal.setAttribute('data-state', 'disabled');
+
+					activateBodyOverflow();
+					
+                    // historyBack();
+
+                    // console.log('modal off close');
+				});
+			});
+		});
+    </script>
+</body>
+</html>
