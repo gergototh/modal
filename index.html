@@ -18,6 +18,11 @@
         body[data-overflow-y = hidden] {
             overflow-y: hidden;
         }
+        @media screen and (min-width: 992px) {
+            body[data-overflow-y = hidden]  {
+                margin-right: 17px;
+            }
+        }
         button {
             background-color: black;
             color: white;
@@ -25,6 +30,7 @@
             padding: 4px;
         }
         .button {
+            margin: auto;
             -webkit-tap-highlight-color: transparent;
             width: 200px;
             padding: 10px;
