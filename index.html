@@ -112,17 +112,14 @@
 		// Functions
 		function historyBack() {
             window.history.back();
-            // console.log('history back');
 		}
 
 		function activateBodyOverflow() {
 			document.body.setAttribute('data-overflow-y', 'scroll');
-            // console.log('body overflow scroll');
 		}
 
 		function disableBodyOverflow() {
 			document.body.setAttribute('data-overflow-y', 'hidden');
-            // console.log('body overflow hidden');
 		}
 
 		// Listeners
@@ -130,22 +127,17 @@
 			const activeModalHash = localStorage.getItem("activeModal");
 			const activeModal = document.querySelector(`[data-modal="${activeModalHash}"]`);
 
-            // console.log('hashchange');
-
 			if (window.location.hash != '#' + activeModalHash) {
 				activeModal.setAttribute('data-state', 'disabled');
 
 				activateBodyOverflow();
 
-                // console.log('hashchange -' + activeModalHash);
 			} else {
 				activeModal.setAttribute('data-state', 'active');
 
 				disableBodyOverflow();
 
                 window.location.hash = activeModalHash;
-
-                // console.log('hashchange +' + activeModalHash);
 			}
 		});
 
@@ -166,37 +158,28 @@
 			const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
 			
             open.addEventListener('click', () => {
-				// const { modalOpen } = open.dataset;
-				// const modal = document.querySelector(`[data-modal="${modalOpen}"]`);
-
 				modal.setAttribute('data-state', 'active');
 
 				disableBodyOverflow();
 
-				// window.location.hash = modalOpen;
+				window.location.hash = modalOpen;
 
 				localStorage.setItem("activeModal", modalOpen);
-
-                var url = "#" + modalOpen;
-
-                history.pushState(null, null, url);
 
 				const activeModal = document.querySelector('.modal[data-state="active"]');
 			});
 
             modal.querySelector('.modal_inner_body').addEventListener('click', (e) => {
-					e.stopPropagation();
-				});
+                e.stopPropagation();
+            });
 
-				modal.addEventListener('click', () => {
-					modal.setAttribute('data-state', 'disabled');
+            modal.addEventListener('click', () => {
+                modal.setAttribute('data-state', 'disabled');
 
-					activateBodyOverflow();
-					
-                    historyBack();
-
-                    // console.log('modal off click');
-				});
+                activateBodyOverflow();
+                
+                historyBack();
+            });
 
             modal.querySelector('.modal_close').addEventListener('click', () => {
                 modal.setAttribute('data-state', 'disabled');
@@ -204,12 +187,9 @@
                 activateBodyOverflow();
                 
                 historyBack();
-
-                // console.log('modal off close');
             });
 
 		});
-
     </script>
 </body>
 </html>
